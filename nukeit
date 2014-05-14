@@ -1,0 +1,1 @@
+rm -rf .git && git init . && git add . && git remote add origin https://github.com/ober/pinky-server.git && git commit -a -m "Fresh start" &&  git push -f --set-upstream origin master 

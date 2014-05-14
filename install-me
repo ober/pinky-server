@@ -1,0 +1,58 @@
+#!/bin/bash -x
+
+#
+# Installer for Pinky-server to the directory where it's called.
+#
+set +e
+
+function read_install_questions() {
+    INSTALL_DIR="${PWD}"
+    # echo "This will build and install Pinky Server"
+    # echo -n "Where would you like to install pinky-server? "
+    # read  INSTALL_DIR
+    # echo -n "Proceed with build? (y/n) "
+    # read  YON
+    # if [[ "$YON" == "y" || "$YON" == "yes" || "$YON" == "YES"  ]]; then
+    #     echo "OK..."
+    # else
+    #     echo "Exiting"
+    #     exit 2
+    # fi
+    echo "Installing to ${INSTALL_DIR}/pinky-server"
+    echo "If you do not want this to happen then Control C now!"
+    echo "sleeping 10 seconds"
+    sleep 10
+    echo "OK: Installing to ${INSTALL_DIR}/pinky-server"
+}
+
+function do_install() {
+    git clone http://github.com/ober/pinky-server && \
+    cd ${INSTALL_DIR}/pinky-server && \
+    make 2>&1 && \
+    useradd -s /bin/false -d "${INSTALL_DIR}"/pinky-server pinky;
+    chown -R pinky:pinky "${INSTALL_DIR}"/pinky-server && \
+    su -s /bin/bash -c "cd ~/vendor/projects/pinky && \
+      git checkout master && \
+      git fetch && \
+      git reset --hard origin/master && \
+      luarocks make --local ./pinky-0.1-0.rockspec && \
+      cd ~ && ./nginx/stop && ./nginx/start" pinky && \
+      curl http://localhost:44444/pinky/disk
+}
+
+function update_pinky() {
+    su -s /bin/bash -c "cd ~/vendor/projects/pinky && \
+      git checkout master && \
+      git fetch && \
+      git reset --hard origin/master && \
+      luarocks make --local ./pinky-0.1-0.rockspec && \
+      cd ~ && ./nginx/stop && ./nginx/start" pinky && \
+      curl http://localhost:44444/pinky/disk
+}
+
+
+function main(){
+    read_install_questions && do_install
+}
+
+main

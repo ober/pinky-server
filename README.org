@@ -1,0 +1,16 @@
+* Pinky Server: Openresty project for Pinky
+
+** Installation of pinky-server
+*** As Root
+- cd opt
+- git clone https://github.com/ober/pinky-server
+- cd pinky-server && make
+- useradd -M -d /data/pinky-server -s /sbin/nologin pinky
+- chown -R pinky:pinky /data/pinky-server
+- su -s /bin/bash pinky
+*** As Pinky
+- cd ~/vendor/projects/pinky && luarocks make --local ./pinky-0.1-0.rockspec
+- cd ~ && ./nginx/start
+- curl localhost:44444/pinky/disk #should produce json
+*** As Root
+- ln -s /data/pinky-server/.luarocks/bin/pinky /bin/pinky #as root

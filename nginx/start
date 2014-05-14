@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export PATH=$(pwd)/ngx_openresty/nginx/sbin:$HOME/.luarocks/bin:$PATH
+export LUA_PATH="$HOME/.luarocks/share/lua/5.1/?.lua;;"
+export LUA_CPATH="$HOME/.luarocks/lib/lua/5.1/?.so;;"
+export LD_LIBRARY_PATH=./ngx_openresty/luajit/lib/
+
+env PATH="$PATH" LUA_CPATH="$LUA_CPATH" LUA_PATH="$LUA_PATH" nginx -p `pwd`/nginx/ -c nginx.conf

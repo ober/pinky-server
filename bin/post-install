@@ -1,0 +1,10 @@
+#!/bin/bash  -x
+
+#
+# Script to set permissions and add user.
+#
+
+
+useradd -s /bin/false -d /data/pinky-server pinky
+chown -R pinky:pinky /data/pinky-server
+su - -c "cd ~ && ./nginx/stop; ./nginx/start" -s /bin/bash pinky

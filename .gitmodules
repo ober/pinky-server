@@ -1,0 +1,3 @@
+[submodule "vendor/projects/pinky"]
+	path = vendor/projects/pinky
+	url = https://github.com/ober/pinky
